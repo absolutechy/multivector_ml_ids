@@ -195,8 +195,8 @@ class LiveCapture:
                     for flow_key in flows_to_remove:
                         del self.flow_table[flow_key]
                 
-                # Sleep before next check
-                time.sleep(10)
+                # Sleep before next check (1s for fast detection)
+                time.sleep(1)
                 
             except Exception as e:
                 print(f"Error in flow timeout checker: {e}")

@@ -61,7 +61,7 @@ CORS_ORIGINS = [
 
 # Live capture settings
 MAX_ALERTS_IN_MEMORY = 1000
-FLOW_TIMEOUT = 5  # seconds - reduced for real-time detection (was 30s)
+FLOW_TIMEOUT = 2  # seconds - ultra-fast detection (2000ms)
 PACKET_BUFFER_SIZE = 1000
 
 # CSV export settings
