@@ -13,6 +13,7 @@ from src.models.random_forest_trainer import RandomForestTrainer
 from src.evaluation.evaluator import ModelEvaluator
 from sklearn.model_selection import train_test_split
 from config.config import TRAIN_TEST_SPLIT_RATIO, RANDOM_STATE
+from pandas import concat
 import time
 
 
@@ -43,9 +44,33 @@ def main():
     cleaner.remove_infinite_values()
     cleaner.filter_attack_classes()
     
+    # Sample dataset to 100k per class for faster training
+    print("\n" + "="*60)
+    print("STEP 2.5: Sampling Dataset (100k per class)")
+    print("="*60)
+    
+    cleaned_df_temp = cleaner.get_cleaned_data()
+    
+    # Sample 100k from each class
+    sampled_dfs = []
+    for attack_class in cleaned_df_temp['Label'].unique():
+        class_df = cleaned_df_temp[cleaned_df_temp['Label'] == attack_class]
+        sample_size = min(100000, len(class_df))
+        sampled = class_df.sample(n=sample_size, random_state=RANDOM_STATE)
+        sampled_dfs.append(sampled)
+        print(f"  {attack_class:20s}: {len(class_df):,} → {sample_size:,}")
+    
+    # Combine sampled data
+    from pandas import concat
+    sampled_df = concat(sampled_dfs, ignore_index=True)
+    print(f"\nTotal samples after sampling: {len(sampled_df):,}")
+    
+    # Update cleaner with sampled data
+    cleaner.df = sampled_df
+    
     # Balance classes using SMOTE
     print("\n" + "="*60)
-    print("STEP 2: Class Balancing with SMOTE")
+    print("STEP 2.6: Class Balancing with SMOTE")
     print("="*60)
     cleaner.balance_classes(method='smote')  # Use SMOTE for better performance
     
@@ -83,7 +108,7 @@ def main():
     print("\n" + "="*60)
     print("STEP 4: Model Training with Hyperparameter Tuning")
     print("="*60)
-    trainer.train_model(X_train_pca, y_train, tune_hyperparameters=False)
+    trainer.train_model(X_train_pca, y_train, tune_hyperparameters=True)
     
     # Step 5: Evaluate Model
     print("\n[STEP 5/6] Evaluating Model...")
