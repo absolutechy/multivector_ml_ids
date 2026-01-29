@@ -42,10 +42,14 @@ class DataManager:
             prediction_result: Dictionary with prediction information
         """
         with self.lock:
+            # Generate unique ID using timestamp + counter
+            timestamp = datetime.now()
+            unique_id = f"{int(timestamp.timestamp() * 1000)}-{self.statistics['total_predictions']}"
+            
             # Add to alerts deque
             alert = {
-                'id': self.statistics['total_predictions'] + 1,
-                'timestamp': prediction_result.get('timestamp', datetime.now().isoformat()),
+                'id': unique_id,
+                'timestamp': prediction_result.get('timestamp', timestamp.isoformat()),
                 'attack_type': prediction_result.get('attack_type', 'Unknown'),
                 'confidence': prediction_result.get('confidence', 0.0),
                 'flow_key': prediction_result.get('flow_key'),

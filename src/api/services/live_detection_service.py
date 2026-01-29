@@ -117,8 +117,13 @@ class LiveDetectionService:
                         # Add to data manager
                         alert = data_manager.add_alert(result)
                         
-                        # Broadcast via WebSocket (async)
-                        asyncio.run(manager.broadcast_alert(alert))
+                        # Broadcast via WebSocket (thread-safe)
+                        try:
+                            # Schedule broadcast in the main event loop
+                            manager.broadcast_alert_sync(alert)
+                        except Exception as e:
+                            # Silently fail if WebSocket not available
+                            pass
                         
                         # Print if attack detected
                         if result['is_attack']:

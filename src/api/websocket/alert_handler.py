@@ -91,6 +91,35 @@ class ConnectionManager:
         }
         await self.broadcast(message)
     
+    def broadcast_alert_sync(self, alert: dict):
+        """
+        Thread-safe method to broadcast alert from synchronous code.
+        Uses a queue to avoid creating new event loops.
+        
+        Args:
+            alert: Alert dictionary with prediction information
+        """
+        # Only broadcast if there are active connections
+        if not self.active_connections:
+            return
+        
+        message = {
+            'type': 'alert',
+            'data': alert
+        }
+        
+        # Create task in existing event loop if available
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                asyncio.create_task(self.broadcast(message))
+            else:
+                # No running loop, skip broadcast
+                pass
+        except RuntimeError:
+            # No event loop in this thread, skip broadcast
+            pass
+    
     def get_connection_count(self):
         """Get number of active connections."""
         return len(self.active_connections)

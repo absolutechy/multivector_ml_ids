@@ -84,7 +84,12 @@ async def stop_capture():
 @router.get("/status")
 async def get_capture_status():
     """Get current capture status."""
-    return live_service.get_status()
+    from src.api.main import predictor
+    
+    status = live_service.get_status()
+    # Add model loaded status
+    status['model_loaded'] = predictor.is_loaded
+    return status
 
 
 @router.post("/pcap/upload")

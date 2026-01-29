@@ -97,8 +97,8 @@ class Predictor:
             # Scale features
             features_scaled = self.scaler.transform(features_df)
             
-            # Apply PCA
-            features_pca = self.pca.transform(features_scaled)
+            # Apply PCA (convert to numpy to suppress feature names warning)
+            features_pca = self.pca.transform(np.array(features_scaled))
             
             # Predict
             prediction = self.model.predict(features_pca)[0]
