@@ -1,63 +1,66 @@
 # =========================
-# Python
+# Machine Learning Artifacts
 # =========================
-__pycache__/
-*.py[cod]
-*$py.class
+models/
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.pt
 
+# =========================
+# Datasets (Large Files)
+# =========================
+data/raw/
+data/processed/
+*.csv
+*.parquet
+*.feather
+*.npz
+*.npy
+
+# CICIDS dataset (already added but keep generic)
+CICIDS*/
+cicids*/
+
+# =========================
+# Network Capture Files
+# =========================
+*.pcap
+*.pcapng
+
+# =========================
+# React / Frontend
+# =========================
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.cache/
+frontend/.next/
+
+# =========================
+# FastAPI runtime
+# =========================
+uvicorn.log
+*.sqlite3
+*.db
+
+# =========================
 # Virtual environments
+# =========================
 venv/
 .venv/
 env/
 
 # =========================
-# Environment variables
+# Windows OS files
 # =========================
-.env
-.env.*
-!.env.example
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
 
 # =========================
-# Logs
+# Temporary files
 # =========================
-*.log
-
-# =========================
-# Build / distribution
-# =========================
-build/
-dist/
-*.egg-info/
-cicids2017/
-
-# =========================
-# Caches / tooling
-# =========================
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
-
-# =========================
-# IDEs / editors
-# =========================
-.vscode/
-.idea/
-*.swp
-
-# =========================
-# OS files
-# =========================
-.DS_Store
-Thumbs.db
-
-# =========================
-# FastAPI / Uvicorn
-# =========================
-*.pid
-
-# =========================
-# Jupyter (if ever used)
-# =========================
-.ipynb_checkpoints/
+tmp/
+temp/
