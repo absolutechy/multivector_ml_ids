@@ -8,8 +8,8 @@ This system uses machine learning (Random Forest) to detect and classify network
 
 - **Benign** (Normal traffic)
 - **DDoS** (Distributed Denial of Service)
-- **Brute Force** (Authentication attacks)
-- **SQL Injection** (Web application attacks)
+- **Brute Force** (SSH/FTP authentication attacks)
+- **Web Attack** (SQL Injection + XSS + Web Brute Force)
 
 ## 📊 Key Features
 
@@ -270,7 +270,7 @@ ws.onmessage = (event) => {
 | `Benign-Monday-no-metadata.parquet` | Benign | 458,831 |
 | `Bruteforce-Tuesday-no-metadata.parquet` | Brute Force | 389,714 |
 | `DDoS-Friday-no-metadata.parquet` | DDoS | 221,264 |
-| `WebAttacks-Thursday-no-metadata.parquet` | SQL Injection | 155,820 |
+| `WebAttacks-Thursday-no-metadata.parquet` | Web Attack | 155,820 |
 
 **Total**: 1,225,650 samples, 78 features
 

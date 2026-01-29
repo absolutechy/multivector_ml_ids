@@ -8,7 +8,7 @@ const COLORS = {
   'Benign': '#10b981',
   'DDoS': '#ef4444',
   'Brute Force': '#f59e0b',
-  'SQL Injection': '#8b5cf6'
+  'Web Attack': '#8b5cf6'
 };
 
 export const StatisticsDashboard = ({ statistics }: { statistics: Statistics | null }) => {

@@ -30,20 +30,21 @@ ATTACK_CLASSES = {
     "Benign": 0,
     "DDoS": 1,
     "Brute Force": 2,
-    "SQL Injection": 3
+    "Web Attack": 3  # All WebAttacks (SQLi + XSS + Web Brute Force)
 }
 
 # Feature engineering parameters
 TRAIN_TEST_SPLIT_RATIO = 0.2
 RANDOM_STATE = 42
-PCA_VARIANCE_THRESHOLD = 0.95  # Retain 95% variance
+PCA_VARIANCE_THRESHOLD = 0.95  # Retain 95% variance (no component limit)
 
 # Random Forest hyperparameters for tuning
 RF_PARAM_GRID = {
-    'n_estimators': [100, 200, 300],
-    'max_depth': [10, 20, 30, None],
+    'n_estimators': [200, 300, 500],
+    'max_depth': [20, 30, None],
     'min_samples_split': [2, 5, 10],
     'min_samples_leaf': [1, 2, 4],
+    'class_weight': ['balanced'],  # Handle class imbalance
     'random_state': [RANDOM_STATE]
 }
 

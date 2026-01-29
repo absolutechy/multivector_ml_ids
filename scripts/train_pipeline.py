@@ -43,10 +43,11 @@ def main():
     cleaner.remove_infinite_values()
     cleaner.filter_attack_classes()
     
-    # Balance classes - using undersampling for faster training
-    # For production, you might want to use SMOTE or no balancing
-    print("\nBalancing classes (undersampling to 100K samples per class for faster training)...")
-    cleaner.balance_classes(method='undersample', target_samples=100000)
+    # Balance classes using SMOTE
+    print("\n" + "="*60)
+    print("STEP 2: Class Balancing with SMOTE")
+    print("="*60)
+    cleaner.balance_classes(method='smote')  # Use SMOTE for better performance
     
     cleaned_df = cleaner.get_cleaned_data()
     cleaning_summary = cleaner.get_cleaning_summary()
@@ -78,9 +79,10 @@ def main():
     print("\n[STEP 4/6] Training Random Forest Model...")
     print("-" * 80)
     trainer = RandomForestTrainer()
-    
-    # Set to True for hyperparameter tuning (takes longer)
-    # Set to False for faster training with default params
+    # Train model with hyperparameter tuning
+    print("\n" + "="*60)
+    print("STEP 4: Model Training with Hyperparameter Tuning")
+    print("="*60)
     trainer.train_model(X_train_pca, y_train, tune_hyperparameters=False)
     
     # Step 5: Evaluate Model

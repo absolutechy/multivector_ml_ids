@@ -40,7 +40,7 @@ export const AlertFeed = ({ latestAlert }: AlertFeedProps) => {
         return 'bg-red-500/10 border-red-500 text-red-400';
       case 'Brute Force':
         return 'bg-yellow-500/10 border-yellow-500 text-yellow-400';
-      case 'SQL Injection':
+      case 'Web Attack':
         return 'bg-purple-500/10 border-purple-500 text-purple-400';
       default:
         return 'bg-gray-500/10 border-gray-500 text-gray-400';
@@ -82,7 +82,7 @@ export const AlertFeed = ({ latestAlert }: AlertFeedProps) => {
           <option value="Benign">Benign</option>
           <option value="DDoS">DDoS</option>
           <option value="Brute Force">Brute Force</option>
-          <option value="SQL Injection">SQL Injection</option>
+          <option value="Web Attack">Web Attack</option>
         </select>
       </div>
 

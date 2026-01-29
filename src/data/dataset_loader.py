@@ -46,11 +46,11 @@ class CICIDS2017Loader:
         self.ddos_df['attack_type'] = 'DDoS'
         print(f"    Loaded {len(self.ddos_df):,} DDoS samples")
         
-        # Load Web Attacks (use all as SQL Injection)
+        # Load Web Attacks (use ALL web attacks)
         print(f"  Loading {WEBATTACKS_FILE.name}...")
         self.webattacks_df = pd.read_parquet(WEBATTACKS_FILE)
-        self.webattacks_df['attack_type'] = 'SQL Injection'
-        print(f"    Loaded {len(self.webattacks_df):,} SQL Injection samples (all web attacks)")
+        self.webattacks_df['attack_type'] = 'Web Attack'
+        print(f"    Loaded {len(self.webattacks_df):,} web attack samples (SQLi + XSS + Web Brute Force)")
         
         print("\n✓ All Parquet files loaded successfully")
         

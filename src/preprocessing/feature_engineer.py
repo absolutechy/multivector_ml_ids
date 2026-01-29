@@ -12,7 +12,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 import joblib
 from config.config import (
-    PCA_VARIANCE_THRESHOLD, SCALER_PATH, PCA_PATH, 
+    PCA_VARIANCE_THRESHOLD, RANDOM_STATE, SCALER_PATH, PCA_PATH, 
     MODELS_DIR, ATTACK_CLASSES
 )
 
@@ -95,9 +95,10 @@ class FeatureEngineer:
             X_train_pca, X_test_pca (if X_test provided)
         """
         print(f"\nApplying PCA (target variance: {variance_threshold*100:.1f}%)...")
+        print("-" * 60)
         
-        # Initialize PCA
-        self.pca = PCA(n_components=variance_threshold, random_state=42)
+        # Initialize PCA with variance threshold
+        self.pca = PCA(n_components=variance_threshold, random_state=RANDOM_STATE)
         
         # Fit and transform training data
         X_train_pca = self.pca.fit_transform(X_train)
@@ -109,12 +110,7 @@ class FeatureEngineer:
         print(f"  PCA components: {self.pca_components}")
         print(f"  Variance retained: {self.variance_retained*100:.2f}%")
         print(f"  Dimensionality reduction: {X_train.shape[1]} → {self.pca_components}")
-        
-        # Show top components' variance
-        print(f"\n  Top 10 components variance:")
-        for i, var in enumerate(self.pca.explained_variance_ratio_[:10], 1):
-            cumsum = self.pca.explained_variance_ratio_[:i].sum()
-            print(f"    PC{i:2d}: {var*100:5.2f}% (cumulative: {cumsum*100:5.2f}%)")
+        print("-" * 60)
         
         if X_test is not None:
             X_test_pca = self.pca.transform(X_test)
