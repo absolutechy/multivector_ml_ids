@@ -12,6 +12,10 @@ import joblib
 from datetime import datetime
 import threading
 import queue
+import warnings
+
+# Suppress sklearn warnings about feature names
+warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 
 from config.config import MODEL_PATH, SCALER_PATH, PCA_PATH, ATTACK_CLASSES
 
@@ -104,6 +108,18 @@ class Predictor:
             prediction = self.model.predict(features_pca)[0]
             probabilities = self.model.predict_proba(features_pca)[0]
             
+            # Validate prediction index
+            if not isinstance(prediction, (int, np.integer)):
+                print(f"Warning: Invalid prediction type: {type(prediction)}, value: {prediction}")
+                prediction = int(prediction) if np.isscalar(prediction) else 0
+            
+            # Ensure prediction is within valid range
+            if prediction < 0 or prediction >= len(probabilities):
+                print(f"Warning: Prediction index {prediction} out of range [0, {len(probabilities)-1}]")
+                print(f"  Flow key: {flow_key}")
+                print(f"  Probabilities shape: {probabilities.shape}")
+                prediction = 0  # Default to first class
+            
             # Get attack type name
             attack_type = self.class_names.get(prediction, "Unknown")
             
@@ -128,11 +144,16 @@ class Predictor:
             
         except Exception as e:
             print(f"Error predicting flow: {e}")
+            print(f"  Flow key: {flow_key}")
+            # Print feature info for debugging
+            if isinstance(flow_features, dict):
+                print(f"  Number of features: {len(flow_features)}")
             return {
                 'timestamp': datetime.now().isoformat(),
                 'flow_key': flow_key,
                 'attack_type': 'Error',
                 'confidence': 0.0,
+                'is_attack': False,  # Critical: Always include this key
                 'error': str(e)
             }
     
